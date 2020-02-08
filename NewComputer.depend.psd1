@@ -15,6 +15,7 @@
     'powershellget'              = 'latest'
     'psreadline'                 = 'latest'
     'VSTeam'                     = 'latest'
+    'EditorServicesCommandSuite' = 'latest'
     
     'azcopy10'                   = @{
         DependencyType = 'Chocolatey'
@@ -32,10 +33,10 @@
     'nvm'                        = @{
         DependencyType = 'Chocolatey'
     }
-    'powershell-preview'                        = @{
+    'powershell-preview'         = @{
         DependencyType = 'Chocolatey'
     }
-    'pwsh'                        = @{
+    'pwsh'                       = @{
         DependencyType = 'Chocolatey'
     }
     'vim'                        = @{                     
