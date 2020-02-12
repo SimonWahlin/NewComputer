@@ -1,3 +1,5 @@
+$ProfileGistId = '9de021cbae976839647d0165c731ceef'
+
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if(-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     throw 'Run with ADMIN credentials'
@@ -68,17 +70,19 @@ Invoke-PSDepend -Path "$PSScriptRoot\NewComputer.depend.psd1" -Confirm:$false
 Update-SessionEnvironment
 
 #--- Bootstrap PowerShell profile
-$ProfileTemplatePath = "$PSScriptRoot\profile.ps1"
-if(Test-Path -Path $ProfileTemplatePath) {
-    $ExpectedProfile = Get-Content -Path $ProfileTemplatePath -Raw
+$ProfileGist = Invoke-RestMethod "https://api.github.com/gists/$ProfileGistId"
+if($ExpectedProfile = $ProfileGist.files.'profile.ps1'.content) {
+    $ExpectedFirstLine = $ExpectedProfile.Substring(0,([Math]::Min($ExpectedProfile.IndexOf("`n"),$ExpectedProfile.Length)))
     $Profile = Get-Content -Path $Profile.CurrentUserAllHosts
-    if($Profile -notcontains '#BootstrapProfile') {
-        '#BootstrapProfile',$ExpectedProfile |
-            Add-Content -Path $PROFILE.CurrentUserAllHosts
+    if($Profile -notcontains $ExpectedFirstLine) {
+        Add-Content -Path $PROFILE.CurrentUserAllHosts -Value $ExpectedProfile
         $PowerShellCoreProfile = pwsh -Command {$Profile.CurrentUserAllHosts}
         Copy-Item -Path $PROFILE.CurrentUserAllHosts -Destination $PowerShellCoreProfile -Force
     }
 }
+
+#--- Add custom oh-my-posh theme
+$null = New-Item -Path '~\Documents\WindowsPowerShell\PoshThemes' -ItemType Directory
 
 # TODO:
 # Cascadia Code font
