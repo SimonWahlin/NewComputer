@@ -6,8 +6,6 @@ if(-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Admi
 }
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
-#--- Download fork of PSDepend
-& "$PSScriptRoot\Save-GitRepo.ps1"
 
 #--- Install BoxStarter ---
 # Load BoxStarter functions

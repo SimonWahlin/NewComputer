@@ -23,6 +23,10 @@
     'azure-cli'                  = @{
         DependencyType = 'Chocolatey'
     }
+    'everything'                        = @{
+        DependencyType = 'Chocolatey'
+        Parameters     = '/client-service /run-on-system-startup'
+    }
     'git'                        = @{
         DependencyType = 'Chocolatey'
         Parameters     = '/GitOnlyOnPath /WindowsTerminal /NoShellIntegration /NoGuiHereIntegration /NoShellHereIntegration /SChannel'
@@ -31,6 +35,9 @@
         DependencyType = 'Chocolatey'
     }
     'nvm'                        = @{
+        DependencyType = 'Chocolatey'
+    }
+    'office365business'         = @{
         DependencyType = 'Chocolatey'
     }
     'powershell-preview'         = @{
@@ -55,18 +62,22 @@
         DependencyType = 'npm'
         Version        = 2
         Target         = 'Global'
+        DependsOn      = 'nvm'
     }
     'autorest'                   = @{
         DependencyType = 'npm'
         Target         = 'Global'
+        DependsOn      = 'nvm'
     }
     '@autorest/autorest'         = @{
         DependencyType = 'npm'
         Target         = 'Global'
+        DependsOn      = 'nvm'
     }
     'typescript'                 = @{
         DependencyType = 'npm'
         Target         = 'Global'
+        DependsOn      = 'nvm'
     }
 
 }
