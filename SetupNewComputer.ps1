@@ -65,9 +65,9 @@ Update-SessionEnvironment
 
 #--- Bootstrap PowerShell profile
 if(-not [string]::IsNullOrEmpty($ProfileGistId)){
-$ProfileGist = Invoke-RestMethod "https://api.github.com/gists/$ProfileGistId"
-if($ExpectedProfile = $ProfileGist.files.'profile.ps1'.content) {
-    $ExpectedFirstLine = $ExpectedProfile.Substring(0,([Math]::Min($ExpectedProfile.IndexOf("`n"),$ExpectedProfile.Length)))
+    $ProfileGist = Invoke-RestMethod "https://api.github.com/gists/$ProfileGistId"
+    if($ExpectedProfile = $ProfileGist.files.'profile.ps1'.content) {
+        $ExpectedFirstLine = $ExpectedProfile.Substring(0,([Math]::Min($ExpectedProfile.IndexOf("`n"),$ExpectedProfile.Length)))
         
         if(-not (Test-Path -Path $Profile.CurrentUserAllHosts)) {
             $null = New-Item -Path $Profile.CurrentUserAllHosts -ItemType File
@@ -76,17 +76,17 @@ if($ExpectedProfile = $ProfileGist.files.'profile.ps1'.content) {
         $ProfileContent = Get-Content -Path $Profile.CurrentUserAllHosts
         if($ProfileContent -notcontains $ExpectedFirstLine) {
             
-        Add-Content -Path $PROFILE.CurrentUserAllHosts -Value $ExpectedProfile
+            Add-Content -Path $PROFILE.CurrentUserAllHosts -Value $ExpectedProfile
 
             if(Get-Command pwsh) {
-        $PowerShellCoreProfile = pwsh -Command {$Profile.CurrentUserAllHosts}
-        Copy-Item -Path $PROFILE.CurrentUserAllHosts -Destination $PowerShellCoreProfile -Force
-    }
+                $PowerShellCoreProfile = pwsh -Command {$Profile.CurrentUserAllHosts}
+                Copy-Item -Path $PROFILE.CurrentUserAllHosts -Destination $PowerShellCoreProfile -Force
+            }
 
             if(Get-Command pwsh-preview) {
                 $PowerShellCoreProfile = pwsh-preview -Command {$Profile.CurrentUserAllHosts}
                 Copy-Item -Path $PROFILE.CurrentUserAllHosts -Destination $PowerShellCoreProfile -Force
-}
+            }
 
         }
     }

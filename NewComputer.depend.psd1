@@ -17,7 +17,10 @@
     'VSTeam'                     = 'latest'
     'EditorServicesCommandSuite' = 'latest'
     
-    'azcopy10'                   = @{
+    'azcopy10'                      = @{
+        DependencyType = 'Chocolatey'
+    }
+    'microsoftazurestorageexplorer' = @{
         DependencyType = 'Chocolatey'
     }
     'azure-cli'                  = @{
