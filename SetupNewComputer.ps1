@@ -106,6 +106,10 @@ $null = New-Item -Path '~\Documents\WindowsPowerShell\PoshThemes' -ItemType Dire
     Remove-Item -Force -ErrorAction Ignore
 
 # TODO:
+# Nuget Bootstrap
+# Pester windows installer protection
+# Put each section behind a feature flag
+# Investigate using Requires module
 # Cascadia Code font
 # Cascadia Code PL font
 # VSCode Settings Sync (install and set up)
