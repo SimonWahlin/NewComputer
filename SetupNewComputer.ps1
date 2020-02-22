@@ -100,6 +100,11 @@ nvm use $Latest
 #--- Add custom oh-my-posh theme
 $null = New-Item -Path '~\Documents\WindowsPowerShell\PoshThemes' -ItemType Directory
 
+#--- Clean up deskop shortcuts
+"$Env:USERPROFILE\Desktop", "$Env:PUBLIC\Desktop" | 
+    Get-ChildItem -Filter '*.lnk' |
+    Remove-Item -Force -ErrorAction Ignore
+
 # TODO:
 # Cascadia Code font
 # Cascadia Code PL font
