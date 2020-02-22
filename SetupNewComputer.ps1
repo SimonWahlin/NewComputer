@@ -14,11 +14,6 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 Get-Boxstarter -Force
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 
-#--- Install nvm and packages
-nvm install latest
-$Latest = (nvm list) -replace '\s' | Where-Object {$_} | Sort-Object | Select-Object -First 1
-nvm use $Latest
-
 #--- Enable developer mode on the system ---
 Set-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -Value 1
 
@@ -78,6 +73,11 @@ if($ExpectedProfile = $ProfileGist.files.'profile.ps1'.content) {
         Copy-Item -Path $PROFILE.CurrentUserAllHosts -Destination $PowerShellCoreProfile -Force
     }
 }
+
+#--- Install nvm and packages
+nvm install latest
+$Latest = (nvm list) -replace '\s' | Where-Object {$_} | Sort-Object | Select-Object -First 1
+nvm use $Latest
 
 #--- Add custom oh-my-posh theme
 $null = New-Item -Path '~\Documents\WindowsPowerShell\PoshThemes' -ItemType Directory
