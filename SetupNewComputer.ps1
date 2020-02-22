@@ -1,3 +1,4 @@
+# Submit a gist ID to download profile.ps1 from the gist and insert the content in all PowerShell profiles
 $ProfileGistId = '9de021cbae976839647d0165c731ceef'
 
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -63,14 +64,31 @@ Invoke-PSDepend -Path "$PSScriptRoot\NewComputer.depend.psd1" -Confirm:$false
 Update-SessionEnvironment
 
 #--- Bootstrap PowerShell profile
+if(-not [string]::IsNullOrEmpty($ProfileGistId)){
 $ProfileGist = Invoke-RestMethod "https://api.github.com/gists/$ProfileGistId"
 if($ExpectedProfile = $ProfileGist.files.'profile.ps1'.content) {
     $ExpectedFirstLine = $ExpectedProfile.Substring(0,([Math]::Min($ExpectedProfile.IndexOf("`n"),$ExpectedProfile.Length)))
-    $Profile = Get-Content -Path $Profile.CurrentUserAllHosts
-    if($Profile -notcontains $ExpectedFirstLine) {
+        
+        if(-not (Test-Path -Path $Profile.CurrentUserAllHosts)) {
+            $null = New-Item -Path $Profile.CurrentUserAllHosts -ItemType File
+        }
+        
+        $ProfileContent = Get-Content -Path $Profile.CurrentUserAllHosts
+        if($ProfileContent -notcontains $ExpectedFirstLine) {
+            
         Add-Content -Path $PROFILE.CurrentUserAllHosts -Value $ExpectedProfile
+
+            if(Get-Command pwsh) {
         $PowerShellCoreProfile = pwsh -Command {$Profile.CurrentUserAllHosts}
         Copy-Item -Path $PROFILE.CurrentUserAllHosts -Destination $PowerShellCoreProfile -Force
+    }
+
+            if(Get-Command pwsh-preview) {
+                $PowerShellCoreProfile = pwsh-preview -Command {$Profile.CurrentUserAllHosts}
+                Copy-Item -Path $PROFILE.CurrentUserAllHosts -Destination $PowerShellCoreProfile -Force
+}
+
+        }
     }
 }
 
