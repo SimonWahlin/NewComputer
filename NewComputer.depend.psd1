@@ -1,21 +1,21 @@
 @{
-    'PSDependOptions'            = @{
+    'PSDependOptions'               = @{
         'Target'     = 'CurrentUser'
         'Parameters' = @{
         }
     }
-    'az'                         = 'latest'
-    'AzureAD'                    = 'latest'
-    'modulebuilder'              = 'latest'
-    'oh-my-posh'                 = 'latest'
-    'posh-git'                   = 'latest'
-    'packagemanagement'          = 'latest'
-    'pester'                     = 'latest'
-    'plaster'                    = 'latest'
-    'powershellget'              = 'latest'
-    'psreadline'                 = 'latest'
-    'VSTeam'                     = 'latest'
-    'EditorServicesCommandSuite' = 'latest'
+    'az'                            = 'latest'
+    'AzureAD'                       = 'latest'
+    'modulebuilder'                 = 'latest'
+    'oh-my-posh'                    = 'latest'
+    'posh-git'                      = 'latest'
+    'packagemanagement'             = 'latest'
+    'pester'                        = 'latest'
+    'plaster'                       = 'latest'
+    'powershellget'                 = 'latest'
+    'psreadline'                    = 'latest'
+    'VSTeam'                        = 'latest'
+    'EditorServicesCommandSuite'    = 'latest'
     
     'azcopy10'                      = @{
         DependencyType = 'Chocolatey'
@@ -23,64 +23,64 @@
     'microsoftazurestorageexplorer' = @{
         DependencyType = 'Chocolatey'
     }
-    'azure-cli'                  = @{
+    'azure-cli'                     = @{
         DependencyType = 'Chocolatey'
     }
-    'everything'                        = @{
+    'everything'                    = @{
         DependencyType = 'Chocolatey'
         Parameters     = '/client-service /run-on-system-startup'
     }
-    'git'                        = @{
+    'git'                           = @{
         DependencyType = 'Chocolatey'
         Parameters     = '/GitOnlyOnPath /WindowsTerminal /NoShellIntegration /NoGuiHereIntegration /NoShellHereIntegration /SChannel'
     }
-    'nodejs'                     = @{
+    'nodejs'                        = @{
         DependencyType = 'Chocolatey'
     }
-    'nvm'                        = @{
+    'nvm'                           = @{
         DependencyType = 'Chocolatey'
     }
-    'office365business'         = @{
+    'office365business'             = @{
         DependencyType = 'Chocolatey'
     }
-    'powershell-preview'         = @{
+    'powershell-preview'            = @{
         DependencyType = 'Chocolatey'
     }
-    'pwsh'                       = @{
+    'pwsh'                          = @{
         DependencyType = 'Chocolatey'
     }
-    'vim'                        = @{                     
+    'vim'                           = @{                     
         Parameters = '/NoContextmenu /NoDesktopShortcuts /RestartExplorer'
     }
-    'visualstudio2019enterprise' = @{
+    'visualstudio2019enterprise'    = @{
         DependencyType = 'Chocolatey'
         Parameters     = '--locale en-US --allWorkloads --includeRecommended --includeOptional --passive --wait'
     }
-    'vscode'                     = @{
+    'vscode'                        = @{
         DependencyType = 'Chocolatey'
         Parameters     = '/NoDesktopIcon /NoQuicklaunchIcon'
     }
 
-    'azure-functions-core-tools' = @{
+    'azure-functions-core-tools'    = @{
         DependencyType = 'npm'
         Version        = 2
         Target         = 'Global'
-        DependsOn      = 'nvm'
+        DependsOn      = 'nodejs'
     }
-    'autorest'                   = @{
+    'autorest'                      = @{
         DependencyType = 'npm'
         Target         = 'Global'
-        DependsOn      = 'nvm'
+        DependsOn      = 'nodejs'
     }
-    '@autorest/autorest'         = @{
+    '@autorest/autorest'            = @{
         DependencyType = 'npm'
         Target         = 'Global'
-        DependsOn      = 'nvm'
+        DependsOn      = 'nodejs'
     }
-    'typescript'                 = @{
+    'typescript'                    = @{
         DependencyType = 'npm'
         Target         = 'Global'
-        DependsOn      = 'nvm'
+        DependsOn      = 'nodejs'
     }
 
 }
