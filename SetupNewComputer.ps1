@@ -116,3 +116,4 @@ $null = New-Item -Path '~\Documents\WindowsPowerShell\PoshThemes' -ItemType Dire
 # # Windows Store
 #   - Windows Teminal
 #     + Settings-file
+# Visio
