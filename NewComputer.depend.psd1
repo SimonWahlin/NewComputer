@@ -30,9 +30,21 @@
         DependencyType = 'Chocolatey'
         Parameters     = '/client-service /run-on-system-startup'
     }
+    'firefox'                       = @{
+        DependencyType = 'Chocolatey'
+    }
     'git'                           = @{
         DependencyType = 'Chocolatey'
         Parameters     = '/GitOnlyOnPath /WindowsTerminal /NoShellIntegration /NoGuiHereIntegration /NoShellHereIntegration /SChannel'
+    }
+    'googlechrome'                  = @{
+        DependencyType = 'Chocolatey'
+    }
+    'microsoft-edge-insider'        = @{
+        DependencyType = 'Chocolatey'
+    }
+    'microsoft-edge-insider-dev'        = @{
+        DependencyType = 'Chocolatey'
     }
     'nodejs'                        = @{
         DependencyType = 'Chocolatey'
