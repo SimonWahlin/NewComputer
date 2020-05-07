@@ -17,6 +17,10 @@
     'VSTeam'                        = 'latest'
     'EditorServicesCommandSuite'    = 'latest'
     
+    'carnac'                      = @{
+        DependencyType = 'Chocolatey'
+    }
+    
     'azcopy10'                      = @{
         DependencyType = 'Chocolatey'
     }
