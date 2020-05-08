@@ -16,14 +16,23 @@
     'psreadline'                    = 'latest'
     'VSTeam'                        = 'latest'
     'EditorServicesCommandSuite'    = 'latest'
-    
-    'carnac'                      = @{
-        DependencyType = 'Chocolatey'
-    }
-    
+
     'azcopy10'                      = @{
         DependencyType = 'Chocolatey'
     }
+    
+    'carnac'                        = @{
+        DependencyType = 'Chocolatey'
+    }
+    
+    'cascadiafonts'                 = @{
+        DependencyType = 'Chocolatey'
+    }
+    
+    'cascadiacodepl'                = @{
+        DependencyType = 'Chocolatey'
+    }
+    
     'microsoftazurestorageexplorer' = @{
         DependencyType = 'Chocolatey'
     }
