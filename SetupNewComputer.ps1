@@ -1,6 +1,9 @@
 # Submit a gist ID to download profile.ps1 from the gist and insert the content in all PowerShell profiles
 $ProfileGistId = '9de021cbae976839647d0165c731ceef'
 
+# File name for file with winget apps
+$WinGetAppsFilePath = "$PSScriptRoot\WinGetApps.txt"
+
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if(-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     throw 'Run with ADMIN credentials'
@@ -17,6 +20,16 @@ Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 
 #--- Enable developer mode on the system ---
 Set-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -Value 1
+
+#--- Bootstrap NuGet for PowerShell Get
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.208 -Force
+
+#--- Remove original Pester
+$module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
+takeown /F $module /A /R
+icacls $module /reset
+icacls $module /grant "*S-1-5-32-544:F" /inheritance:d /T
+Remove-Item -Path $module -Recurse -Force -Confirm:$false
 
 #--- Load function to download PSDepend fork and download to PSModulePath ---
 function Save-GitRepo {
@@ -57,11 +70,32 @@ function Save-GitRepo {
     }
 }
 $PSDependPath = 'C:\Program Files\PowerShell\Modules\PSDepend'
-Save-GitRepo -Owner simonwahlin -Repository PSDepend -Path PSDepend -DestinationPath $PSDependPath
+if(-not(Test-Path -Path $PSDependPath -PathType Container)) {
+    Save-GitRepo -Owner simonwahlin -Repository PSDepend -Path PSDepend -DestinationPath $PSDependPath
+}
 Import-Module $PSDependPath
 Invoke-PSDepend -Path "$PSScriptRoot\NewComputer.depend.psd1" -Confirm:$false
 
 Update-SessionEnvironment
+
+#--- IF Winget is installed, install WinGet Apps
+if(Get-Command -Name winget) {
+    if(-not ([string]::IsNullOrWhiteSpace($WinGetAppsFilePath))) {
+        if(Test-Path -Path $WinGetAppsFilePath -PathType Leaf) {
+            $Apps = Get-Content -Path $WinGetAppsFilePath
+            if($Apps.count -gt 0) {
+                foreach($App in $Apps) {
+                    winget install --exact --id $App -h
+                    if($?) {
+                        Write-Verbose "$App install successfully" -Verbose
+                    } else {
+                        Write-Warning "Failed to install $App"
+                    }
+                }
+            }
+        }
+    }
+}
 
 #--- Bootstrap PowerShell profile
 if(-not [string]::IsNullOrEmpty($ProfileGistId)){
@@ -106,12 +140,9 @@ $null = New-Item -Path '~\Documents\WindowsPowerShell\PoshThemes' -ItemType Dire
     Remove-Item -Force -ErrorAction Ignore
 
 # TODO:
-# Nuget Bootstrap
-# Pester windows installer protection
+# PwrOps oh-my-posh theme
 # Put each section behind a feature flag
 # Investigate using Requires module
-# Cascadia Code font
-# Cascadia Code PL font
 # VSCode Settings Sync (install and set up)
 # # Windows Store
 #   - Windows Teminal
