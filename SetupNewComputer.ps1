@@ -26,10 +26,12 @@ Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.208 -Force
 
 #--- Remove original Pester
 $module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
-takeown /F $module /A /R
-icacls $module /reset
-icacls $module /grant "*S-1-5-32-544:F" /inheritance:d /T
-Remove-Item -Path $module -Recurse -Force -Confirm:$false
+if(Test-Path $module) {
+    takeown /F $module /A /R
+    icacls $module /reset
+    icacls $module /grant "*S-1-5-32-544:F" /inheritance:d /T
+    Remove-Item -Path $module -Recurse -Force -Confirm:$false
+}
 
 #--- Load function to download PSDepend fork and download to PSModulePath ---
 function Save-GitRepo {
@@ -74,9 +76,21 @@ if(-not(Test-Path -Path $PSDependPath -PathType Container)) {
     Save-GitRepo -Owner simonwahlin -Repository PSDepend -Path PSDepend -DestinationPath $PSDependPath
 }
 Import-Module $PSDependPath
-Invoke-PSDepend -Path "$PSScriptRoot\NewComputer.depend.psd1" -Confirm:$false
-
+Invoke-PSDepend -Path "$PSScriptRoot\psdependencies\Modules.depend.psd1" -Confirm:$false
 Update-SessionEnvironment
+Invoke-PSDepend -Path "$PSScriptRoot\psdependencies\Chocolatey.depend.psd1" -Confirm:$false
+Update-SessionEnvironment
+Invoke-PSDepend -Path "$PSScriptRoot\psdependencies\npm.depend.psd1" -Confirm:$false
+Update-SessionEnvironment
+
+#--- Bootstrap WinGet
+$OldProgressPref = $ProgressPreference
+$ProgressPreference = 'SilentlyContinue'
+$WinGetRelease = Invoke-RestMethod -Uri 'https://api.github.com/repos/microsoft/winget-cli/releases/latest'
+$WinGetInstaller = $WinGetRelease.assets | Where-Object 'name' -like 'Microsoft.DesktopAppInstaller*.appxbundle'
+Invoke-WebRequest -Uri $WinGetInstaller.browser_download_url -OutFile "$Env:Temp\$($WinGetInstaller.name)" -UseBasicParsing
+Add-AppxPackage -Path "$Env:Temp\$($WinGetInstaller.name)" -ForceUpdateFromAnyVersion
+$ProgressPreference = $OldProgressPref
 
 #--- IF Winget is installed, install WinGet Apps
 if(Get-Command -Name winget) {
@@ -96,6 +110,7 @@ if(Get-Command -Name winget) {
         }
     }
 }
+Update-SessionEnvironment
 
 #--- Bootstrap PowerShell profile
 if(-not [string]::IsNullOrEmpty($ProfileGistId)){

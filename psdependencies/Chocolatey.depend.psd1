@@ -1,22 +1,4 @@
 @{
-    'PSDependOptions'            = @{
-        'Target'     = 'CurrentUser'
-        'Parameters' = @{
-        }
-    }
-    'az'                         = 'latest'
-    'AzureAD'                    = 'latest'
-    'modulebuilder'              = 'latest'
-    'oh-my-posh'                 = 'latest'
-    'posh-git'                   = 'latest'
-    'packagemanagement'          = 'latest'
-    'pester'                     = 'latest'
-    'plaster'                    = 'latest'
-    'powershellget'              = 'latest'
-    'psreadline'                 = 'latest'
-    'VSTeam'                     = 'latest'
-    'EditorServicesCommandSuite' = 'latest'
-
     'azcopy10'                   = @{
         DependencyType = 'Chocolatey'
     }
@@ -98,20 +80,10 @@
     #     Target         = 'Global'
     #     DependsOn      = 'nodejs'
     # }
-    'autorest'                   = @{
-        DependencyType = 'npm'
-        Target         = 'Global'
-        DependsOn      = 'nodejs'
-    }
-    '@autorest/autorest'         = @{
-        DependencyType = 'npm'
-        Target         = 'Global'
-        DependsOn      = 'nodejs'
-    }
-    'typescript'                 = @{
-        DependencyType = 'npm'
-        Target         = 'Global'
-        DependsOn      = 'nodejs'
-    }
+
+
+    # TODO: Errors saying npm command not found
+    # Need to reload $Path maybe?
+    
 
 }
