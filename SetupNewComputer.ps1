@@ -21,6 +21,14 @@ Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 #--- Enable developer mode on the system ---
 Set-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -Value 1
 
+#--- Enable WSL and VirtualMachinePlatform
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+wsl --set-default-version 2
+
+#--- Enale Windows Sandbox
+dism /online /enable-feature /featureName:"Containers-DisposableClientVM" /all /norestart
+
 #--- Bootstrap NuGet for PowerShell Get
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.208 -Force
 
