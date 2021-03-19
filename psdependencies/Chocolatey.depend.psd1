@@ -1,9 +1,6 @@
 @{
+    # Things I haven't found on winget yet
     'azcopy10'                   = @{
-        DependencyType = 'Chocolatey'
-    }
-    
-    'carnac'                     = @{
         DependencyType = 'Chocolatey'
     }
     
@@ -14,7 +11,15 @@
     'cascadiacodepl'             = @{
         DependencyType = 'Chocolatey'
     }
-    
+    'nvm'                           = @{
+        DependencyType = 'Chocolatey'
+    }
+    'office365business'          = @{
+        DependencyType = 'Chocolatey'
+    }
+    'sqllocaldb'                 = @{
+        DependencyType = 'Chocolatey'
+    }
     # 'microsoftazurestorageexplorer' = @{
     #     DependencyType = 'Chocolatey'
     # }
@@ -41,27 +46,20 @@
     # 'microsoft-edge-insider-dev'        = @{
     #     DependencyType = 'Chocolatey'
     # }
-    'nodejs'                        = @{
-        DependencyType = 'Chocolatey'
-    }
-    'nvm'                           = @{
-        DependencyType = 'Chocolatey'
-    }
-    'office365business'          = @{
-        DependencyType = 'Chocolatey'
-    }
+    # 'nodejs'                        = @{
+    #     DependencyType = 'Chocolatey'
+    # }
+   
     # 'powershell-preview'            = @{
     #     DependencyType = 'Chocolatey'
     # }
-    'powertoys'                  = @{
-        DependencyType = 'Chocolatey'
-    }
+    # 'powertoys'                  = @{
+    #     DependencyType = 'Chocolatey'
+    # }
     # 'pwsh'                       = @{
     #     DependencyType = 'Chocolatey'
     # }
-    'sqllocaldb'                 = @{
-        DependencyType = 'Chocolatey'
-    }
+    
     # 'vim'                        = @{                     
     #     Parameters = '/NoContextmenu /NoDesktopShortcuts /RestartExplorer'
     # }

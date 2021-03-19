@@ -6,6 +6,7 @@
     }
     'az'                         = 'latest'
     'AzureAD'                    = 'latest'
+    'bicep'                      = 'latest'
     'modulebuilder'              = 'latest'
     'oh-my-posh'                 = 'latest'
     'posh-git'                   = 'latest'
