@@ -11,13 +11,13 @@
     'cascadiacodepl'             = @{
         DependencyType = 'Chocolatey'
     }
-    'nvm'                           = @{
+    'nvm'                        = @{
         DependencyType = 'Chocolatey'
     }
     'office365business'          = @{
         DependencyType = 'Chocolatey'
     }
-    'sqllocaldb'                 = @{
+    'sql-server-express'         = @{
         DependencyType = 'Chocolatey'
     }
     # 'microsoftazurestorageexplorer' = @{
