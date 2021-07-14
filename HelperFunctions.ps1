@@ -39,13 +39,19 @@ function Save-GitRepo {
 function Invoke-Winget {
     [CmdletBinding()]
     param (
-        $AppListPath
+        [string]$AppListPath
     )
     
     if (Get-Command -Name winget) {
         if (-not ([string]::IsNullOrWhiteSpace($AppListPath))) {
             if (Test-Path -Path $AppListPath -PathType Leaf) {
-                $Apps = Get-Content -Path $AppListPath
+                if($AppListPath.EndsWith('.psd1')) {
+                    $Apps = Import-PowerShellDataFile -Path $AppListPath | ForEach-Object -MemberName 'Keys'
+                }
+                else {
+                    $Apps = Get-Content -Path $AppListPath
+                }
+                $Apps = Import-PowerShellDataFile -Path $AppListPath | ForEach-Object -MemberName 'Keys'
                 if ($Apps.count -gt 0) {
                     winget source update
                     foreach ($App in $Apps) {
@@ -66,7 +72,7 @@ function Invoke-Winget {
 function Install-Winget {
     $ProgressPreference = 'SilentlyContinue'
     $WinGetRelease = Invoke-RestMethod -Uri 'https://api.github.com/repos/microsoft/winget-cli/releases/latest'
-    $WinGetInstaller = $WinGetRelease.assets | Where-Object 'name' -like 'Microsoft.DesktopAppInstaller*.appxbundle'
+    $WinGetInstaller = $WinGetRelease.assets | Where-Object 'name' -like 'Microsoft.DesktopAppInstaller*.msixbundle'
     Invoke-WebRequest -Uri $WinGetInstaller.browser_download_url -OutFile "$Env:Temp\$($WinGetInstaller.name)" -UseBasicParsing
     Add-AppxPackage -Path "$Env:Temp\$($WinGetInstaller.name)" -ForceUpdateFromAnyVersion 
 }

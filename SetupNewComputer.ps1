@@ -2,7 +2,7 @@
 $ProfileGistId = '9de021cbae976839647d0165c731ceef'
 
 # File name for file with winget apps
-$WinGetAppsFilePath = ".\WinGetApps.txt"
+$WinGetAppsFilePath = ".\WinGetApps.psd1"
 
 #--- Initialize
 $PSDefaultParameterValues['*-Location:StackName'] = 'UpdateComputer'
@@ -28,7 +28,7 @@ Boxstarter.WinConfig\Update-ExecutionPolicy
 Boxstarter.WinConfig\Enable-MicrosoftUpdate
 BoxStarter.WinConfig\Install-WindowsUpdate -acceptEula -SuppressReboots 
 BoxStarter.WinConfig\Set-WindowsExplorerOptions -EnableShowHiddenFilesFoldersDrives -EnableShowProtectedOSFiles -EnableShowFileExtensions -EnableShowFullPathInTitleBar -EnableOpenFileExplorerToQuickAccess 
-BoxStarter.WinConfig\Set-BoxstarterTaskbarOptions -Size Small -Dock Bottom -Combine Always -AlwaysShowIconsOn -MultiMonitorOn -MultiMonitorMode MainAndOpen -MultiMonitorCombine Always
+BoxStarter.WinConfig\Set-BoxstarterTaskbarOptions -Size Small -Dock Bottom -Combine Always -MultiMonitorOn -MultiMonitorMode MainAndOpen -MultiMonitorCombine Always
 
 #--- Enable developer mode on the system ---
 Set-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -Value 1
@@ -36,7 +36,12 @@ Set-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelU
 #--- Enable WSL and VirtualMachinePlatform
 dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-wsl --set-default-version 2
+try {
+    Get-Command -Name wsl -CommandType Application -ErrorAction 'Stop'
+    wsl --set-default-version 2
+} catch {
+    # TODO: wsl command not found, restart needed
+}
 
 #--- Enale Windows Sandbox
 dism /online /enable-feature /featureName:"Containers-DisposableClientVM" /all /norestart
@@ -61,17 +66,23 @@ if(-not(Test-Path -Path $PSDependPath -PathType Container)) {
     Save-GitRepo -Owner simonwahlin -Repository PSDepend -Path PSDepend -DestinationPath $PSDependPath
 }
 Import-Module $PSDependPath
-Invoke-PSDepend -Path ".\psdependencies\Modules.depend.psd1" -Confirm:$false
+Invoke-PSDepend -Path ".\psdependencies\Modules.depend.psd1" -Confirm:$false -Verbose
 Update-SessionEnvironment
-Invoke-PSDepend -Path ".\psdependencies\Chocolatey.depend.psd1" -Confirm:$false
+Invoke-PSDepend -Path ".\psdependencies\Chocolatey.depend.psd1" -Confirm:$false -Verbose
 Update-SessionEnvironment
 
 #--- Install nvm and packages
 Update-SessionEnvironment
-nvm install latest
-$Latest = (nvm list) -replace '\s' | Where-Object {$_} | Sort-Object | Select-Object -First 1
-nvm use $Latest
-Update-SessionEnvironment
+try {
+    Get-Command -Name nvm -CommandType Application -ErrorAction 'Stop'
+    nvm install latest
+    $Latest = (nvm list) -replace '\s' | Where-Object {$_} | Sort-Object | Select-Object -First 1
+    nvm use $Latest
+    Update-SessionEnvironment
+}
+catch {
+    # ignore errors
+}
 
 #--- Install npm packages
 Invoke-PSDepend -Path ".\psdependencies\npm.depend.psd1" -Confirm:$false
@@ -108,6 +119,7 @@ if(-not [string]::IsNullOrEmpty($ProfileGistId)){
 
 #--- Add custom oh-my-posh theme
 $null = New-Item -Path '~\Documents\WindowsPowerShell\PoshThemes' -ItemType Directory
+# Todo: add oh-my-posh themes here
 
 #--- Clean up deskop shortcuts
 "$Env:USERPROFILE\Desktop", "$Env:PUBLIC\Desktop" | 
