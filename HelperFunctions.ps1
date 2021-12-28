@@ -71,6 +71,8 @@ function Invoke-Winget {
 
 function Install-Winget {
     $ProgressPreference = 'SilentlyContinue'
+    $VCLibs = Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile "$Env:Temp\Microsoft.VCLibs.x64.14.00.Desktop.appx" -UseBasicParsing
+    Add-AppxPackage -Path "$Env:Temp\Microsoft.VCLibs.x64.14.00.Desktop.appx" -ForceUpdateFromAnyVersion 
     $WinGetRelease = Invoke-RestMethod -Uri 'https://api.github.com/repos/microsoft/winget-cli/releases/latest'
     $WinGetInstaller = $WinGetRelease.assets | Where-Object 'name' -like 'Microsoft.DesktopAppInstaller*.msixbundle'
     Invoke-WebRequest -Uri $WinGetInstaller.browser_download_url -OutFile "$Env:Temp\$($WinGetInstaller.name)" -UseBasicParsing

@@ -118,7 +118,7 @@ if(-not [string]::IsNullOrEmpty($ProfileGistId)){
 }
 
 #--- Add custom oh-my-posh theme
-$null = New-Item -Path '~\Documents\WindowsPowerShell\PoshThemes' -ItemType Directory
+$null = Copy-Item -Path "$PSScriptRoot\.simonw-oh-my-posh-theme.omp.json" -Destination '~'
 # Todo: add oh-my-posh themes here
 
 #--- Clean up deskop shortcuts
@@ -133,11 +133,7 @@ while (Get-Location) {
 $PSDefaultParameterValues.Remove('Push-Location:StackName')
 
 # TODO:
-# PwrOps oh-my-posh theme
 # Put each section behind a feature flag
 # Investigate using Requires module
 # VSCode Settings Sync (install and set up)
-# # Windows Store
-#   - Windows Teminal
-#     + Settings-file
 # Visio
