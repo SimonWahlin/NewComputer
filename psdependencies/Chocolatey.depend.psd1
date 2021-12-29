@@ -12,6 +12,9 @@
     'cascadia-code-nerd-font' = @{
         DependencyType = 'Chocolatey'
     }
+    'jq' = @{
+        DependencyType = 'Chocolatey'
+    }
     'nvm'                     = @{
         DependencyType = 'Chocolatey'
     }
