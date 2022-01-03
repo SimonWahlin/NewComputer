@@ -132,6 +132,10 @@ while (Get-Location) {
 }
 $PSDefaultParameterValues.Remove('Push-Location:StackName')
 
+#--- Register nuget.org as a package source
+if(Get-Command dotnet) {
+    dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+}
 # TODO:
 # Put each section behind a feature flag
 # Investigate using Requires module
