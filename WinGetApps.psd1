@@ -6,6 +6,7 @@
     'CodecGuide.K-LiteCodecPackMega'      = ''
     'Discord.Discord'                     = ''
     'Git.Git'                             = ''
+    'GitHub.cli'                          = ''
     'Inkscape.Inkscape'                   = ''
     'LogMeIn.LastPass'                    = ''
     'Microsoft.AzureCLI'                  = ''
