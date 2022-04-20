@@ -1,5 +1,4 @@
 @{
-    '7zip.7zip'                           = ''
     'Audacity.Audacity'                   = ''
     'Canonical.Ubuntu'                    = ''
     'code52.Carnac'                       = ''
